@@ -1,0 +1,23 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "Online Store",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rebecalvarez/bamazon.git"
+  },
+  "author": "Rebeca Dodero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rebecalvarez/bamazon/issues"
+  },
+  "homepage": "https://github.com/rebecalvarez/bamazon#readme",
+  "dependencies": {
+    "inquirer": "^6.2.1",
+    "mysql": "^2.16.0"
+  }
+}
