@@ -46,7 +46,7 @@ connection.connect(function(error) {
 function queryAllProducts() {
     connection.query("SELECT * FROM products", function(error, response) {
      
-  
+        console.log(greenColor("      ==========  WELCOME TO BAMAZON ========== "));
       for(var i = 0; i< response.length; i++){
           console.log(response[i].item_id + " | " + response[i].product_name + " | " + response[i].department_name + " | " + "$ "+ response[i].price + " | " + "In-Stock: " +response[i].stock_quantity)
       }
@@ -62,7 +62,7 @@ function purchase() {
     // query the database for all items for purchase
     connection.query("SELECT * FROM products", function(err, results) {
       if (err) throw err;
-      // once you have the items, prompt the user for which they'd like to bid on
+      // once you have the items, prompt the user for which they'd like to purchase on
       inquirer
         .prompt([
           {
@@ -94,7 +94,7 @@ function purchase() {
             var enoughProduct = chosenItem.stock_quantity - parseInt(answer.quantity);
           // determine if there is enough product
           if (enoughProduct >= 0) {
-            // bid was high enough, so update db, let the user know, and start over
+            // there is enough, so update db
             connection.query(
               "UPDATE products SET ? WHERE ?",
               [
@@ -108,16 +108,17 @@ function purchase() {
               function(error) {
                 if (error) throw err;
                 var totalPurchase = chosenItem.price * answer.quantity;
-                console.log("Order placed successfully!");
-                console.log('Your Total was : '+ totalPurchase);
-                console.log("Item Purchased: "+ chosenItem.product_name);
-               // start();
+                totalPurchase = totalPurchase.toFixed(2);
+                console.log(storeColor("Order placed successfully!"));
+                console.log(greenColor('Your Total was : '+ totalPurchase));
+                console.log(greenColor("Item Purchased: "+ chosenItem.product_name));
+                buyAgain();
               }
             );
           }
           else {
             // There is not enough product for purchase, so apologize and start over
-            console.log("There is not enough produc for purchase. Try again...");
+            console.log(redColor("There is not enough product for purchase. Try again..."));
            // start();
            purchase();
           }
@@ -129,22 +130,22 @@ function purchase() {
   function buyAgain() {
         var readyToBuyAgain =[
           {
-            type: 'text',
+            type: 'confirm',
             name: 'readyToBuy',
-            message: 'Would you like to purchse another product?',
+            message: 'Would you like to purchase another product?',
             default: true
           }
       
         ];
         inquirer.prompt(readyToBuyAgain).then(answers => {
-          // if the user confirms they want to play, start a game.
+          // if the user confirms they want to buy again.
           if (answers.readyToBuy){
-            console.log(storeColor("Great! Here are more products"));
+            console.log(storeColor("      ===== GREAT! CHECK OUT THESE PRODUCTS! ====="));
             queryAllProducts();
             purchase();
           } 
           else {
-            console.log(gameTextColor("Thank you for your purchase. Come back Soon!"));
+            console.log(redColor("Thank you for your purchase. Come back Soon!"));
             return;
           }
         });
