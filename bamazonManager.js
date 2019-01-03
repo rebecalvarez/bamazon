@@ -31,9 +31,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(error) {
   if (error) throw error;
- // console.log("connected as id " + connection.threadId);
- // queryAllProducts();
-  //purchase();
+ 
   start();
   
 });
@@ -62,8 +60,8 @@ function start(){
             addInventory();
    //   console.log(greenColor('Add Inventory'));
           }else if(answer.option === 'Add New Product'){
-            console.log(greenColor('Add New Product'));
-       //     addNewProduct();
+            //console.log(greenColor('Add New Product'));
+          addNewProduct();
           }
           else{
             // if user doesn't want to play again, exit game.
@@ -168,6 +166,69 @@ function start(){
 
 
 
+      function  addNewProduct(){
+        // prompt for info about the item being put up for auction
+        inquirer
+          .prompt([
+            {
+              name: "productName",
+              type: "input",
+              message: "What would you like to call your Product"
+            },
+            {
+              name: "departmentName",
+              type: "input",
+              message: "What department is this item associated with?"
+            },
+            {
+              name: "priceValue",
+              type: "input",
+              message: "What would be the price?",
+              validate: function(value) {
+                if (isNaN(value) === false) {
+                  return true;
+                }
+                return false;
+              }
+            },
+            {
+                name: "stockQuantity",
+                type: "input",
+                message: "What would be the stock Quantity?",
+                validate: function(value) {
+                  if (isNaN(value) === false) {
+                    return true;
+                  }
+                  return false;
+                }
+              }
+          ])
+          .then(function(answer) {
+            // when finished prompting, insert a new item into the db with that info
+            connection.query(
+              "INSERT INTO products SET ?",
+              {
+                product_name: answer.productName,
+                department_name: answer.departmentName,
+                price: answer.priceValue,
+                stock_quantity: answer.stockQuantity
+              },
+              function(err) {
+                if (err) throw err;
+                console.log(greenColor("You added a new Product to the Store"));
+                // re-prompt the user for if they want to bid or post
+                confirmMenu();
+               
+              }
+            );
+          });
+      }
+
+//   item_id 
+//   product_name VARCHAR(45) NULL,
+//   department_name VARCHAR(45) NULL,
+//   price DECIMAL(10,2) NULL,
+//   stock_quantity INT NULL,
 
       function confirmMenu(){
         var backToMenu =[
