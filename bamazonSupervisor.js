@@ -126,27 +126,36 @@ function start(){
             return valid || 'Please enter a number'
         }
     }]).then(function(answers) {
-    //    connection.query(`INSERT INTO departments (department_name, over_head_cost) VALUES ("${answers.new_dept}", ${answers.new_overhead})`, function(error, results) {})
-    connection.query(
-        "INSERT INTO departments SET ?",
-    {
+        connection.query(`INSERT INTO departments 
+    (department_name, over_head_costs) VALUES ("${answers.new_dept}", ${answers.new_overhead})`, function(error, results) {})
+    // connection.query(
+    //     "INSERT INTO departments SET ?",
+    // {
       
-      department_name: answers.new_dept,
-      over_head_cost: answers.new_overhead
+    //     'Department Name': answers.new_dept,
+    //     'Overhead Costs': answers.new_overhead
       
-    }, function(error, results) {})
-        console.log(`\n- - - - - - - - -\n`);
-        console.log(`Department Added Successfully!`);
-        console.log(`\n- - - - - - - - -\n`);
-        start();
-    })
+    // }, function(error, results) {})
+    //     console.log(`\n- - - - - - - - -\n`);
+    //     console.log(`Department Added Successfully!`);
+    //     console.log(`\n- - - - - - - - -\n`);
+    //     start();
+    // })
+    console.log(storeColor(`\n- - - - - - - - -\n`));
+        console.log(storeColor(`Department Added Successfully!`));
+     console.log(storeColor(`\n- - - - - - - - -\n`));
+    start();
+    } )
+      
+};
 
-    // "INSERT INTO products SET ?",
+
+
+
+  // "INSERT INTO products SET ?",
     // {
     //   product_name: answer.productName,
     //   department_name: answer.departmentName,
     //   price: answer.priceValue,
     //   stock_quantity: answer.stockQuantity
     // },
-      
-};
