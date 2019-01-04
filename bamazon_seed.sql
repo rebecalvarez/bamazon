@@ -12,6 +12,14 @@ CREATE TABLE products (
   PRIMARY KEY (item_id)
 );
 
+ALTER TABLE products
+ADD COLUMN product_sales DECIMAL(10,2) AFTER stock_quantity;
+
+ALTER TABLE products
+MODIFY product_sales BIGINT NOT NULL DEFAULT 0;
+
+ALTER TABLE products
+MODIFY product_sales  DECIMAL(10,2) NOT NULL;
 
 INSERT INTO products (product_name, department_name, price,stock_quantity)
 VALUES ("Cable Knit Beanie", "Clothing", 12.99, 20);
@@ -48,3 +56,26 @@ VALUES ("iPhone X Charger", "Electronics", 10.99, 150);
 
 INSERT INTO products (product_name, department_name, price,stock_quantity)
 VALUES ("SSD Hard Drive", "Electronics", 205.55, 85);
+
+CREATE TABLE departments (
+  department_id INT NOT NULL AUTO_INCREMENT,
+  department_name VARCHAR(45) NULL,
+  over_head_costs DECIMAL(10,2) NULL,
+  PRIMARY KEY (department_id)
+);
+
+INSERT INTO departments  (department_name, over_head_costs)
+VALUES ("Electronics", 6500);
+
+INSERT INTO departments  (department_name, over_head_costs)
+VALUES ("Jewelery", 5500);
+
+INSERT INTO departments  (department_name, over_head_costs)
+VALUES ("Clothing", 5400);
+
+
+ALTER TABLE departments
+ADD COLUMN product_sales DECIMAL(10,2) AFTER over_head_costs;
+
+ALTER TABLE departments
+ADD COLUMN total_profit DECIMAL(10,2) AFTER product_sales;

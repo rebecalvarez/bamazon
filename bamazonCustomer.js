@@ -48,7 +48,7 @@ function queryAllProducts() {
      
         console.log(greenColor("      ==========  WELCOME TO BAMAZON ========== "));
       for(var i = 0; i< response.length; i++){
-          console.log(response[i].item_id + " | " + response[i].product_name + " | " + response[i].department_name + " | " + "$ "+ response[i].price + " | " + "In-Stock: " +response[i].stock_quantity)
+          console.log(response[i].item_id + " | " + response[i].product_name + " | " + response[i].department_name + " | " + "$ "+ response[i].price + " | " + "In-Stock: " +response[i].stock_quantity + " | " + "Product Sales: " +response[i].product_sales)
       }
      
      
@@ -91,10 +91,14 @@ function purchase() {
               chosenItem = results[i];
             }
           }
-            var enoughProduct = chosenItem.stock_quantity - parseInt(answer.quantity);
+          var inputQuantity = parseInt(answer.quantity);
+            var enoughProduct = chosenItem.stock_quantity - inputQuantity;
+            
           // determine if there is enough product
           if (enoughProduct >= 0) {
             // there is enough, so update db
+            var totalPurchase = chosenItem.price * inputQuantity;
+                totalPurchase = totalPurchase.toFixed(2);
             connection.query(
               "UPDATE products SET ? WHERE ?",
               [
@@ -107,14 +111,33 @@ function purchase() {
               ],
               function(error) {
                 if (error) throw err;
-                var totalPurchase = chosenItem.price * answer.quantity;
-                totalPurchase = totalPurchase.toFixed(2);
+                
                 console.log(storeColor("Order placed successfully!"));
                 console.log(greenColor('Your Total was : '+ totalPurchase));
                 console.log(greenColor("Item Purchased: "+ chosenItem.product_name));
                 buyAgain();
               }
             );
+// Updating product sales
+            connection.query(
+                "UPDATE products SET ? WHERE ?",
+                [
+                  {
+                    product_sales: totalPurchase
+                  },
+                  {
+                      item_id: chosenItem.item_id
+                  }
+                ],
+                function(error) {
+                  if (error) throw err;
+                  
+                //   console.log(storeColor("Order placed successfully!"));
+                //   console.log(greenColor('Your Total was : '+ totalPurchase));
+                //   console.log(greenColor("Item Purchased: "+ chosenItem.product_name));
+                //   buyAgain();
+                }
+              );
           }
           else {
             // There is not enough product for purchase, so apologize and start over
