@@ -48,7 +48,7 @@ function queryAllProducts() {
      
         console.log(greenColor("      ==========  WELCOME TO BAMAZON ========== "));
       for(var i = 0; i< response.length; i++){
-          console.log(response[i].item_id + " | " + response[i].product_name + " | " + response[i].department_name + " | " + "$ "+ response[i].price + " | " + "In-Stock: " +response[i].stock_quantity + " | " + "Product Sales: " +response[i].product_sales)
+          console.log(response[i].item_id + " | " + response[i].product_name + " | " + response[i].department_name + " | " + "$ "+ response[i].price + " | " + "In-Stock: " +response[i].stock_quantity)
       }
      
      
@@ -104,8 +104,7 @@ function purchase() {
                 totalPurchase = totalPurchase.toFixed(2);
                 // the sum of all the sales plus the new sale
                 productSalesItem = parseInt(chosenItem.product_sales) + parseInt(totalPurchase);
-                console.log(redColor("Chosen item Product Sales: " + chosenItem.product_sales + totalPurchase ));
-                console.log(redColor("This is the product sales Item  " + productSalesItem));
+              
             connection.query(
               "UPDATE products SET ? WHERE ?",
               [
