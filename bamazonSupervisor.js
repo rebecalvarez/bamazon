@@ -33,9 +33,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(error) {
   if (error) throw error;
- // console.log("connected as id " + connection.threadId);
- // queryAllProducts();
- // purchase();
+
  start();
   
 });
@@ -80,16 +78,6 @@ function start(){
          group by department_name) b
       on a.department_name= b.dept_name`
       
-        //`SELECT departments.department_id AS 'Department ID',
-    //                            departments.department_name AS 'Department Name',
-    //                            departments.over_head_costs AS 'Overhead Costs',
-    //                            products.product_sales AS 'Product Sales'
-    //                            (products.product_sales -  departments.over_head_costs) AS total_profit,
-    //                            departments.total_profit  AS 'Total Profit'
-    //                            FROM departments
-    //                            LEFT JOIN products on products.department_name=departments.department_name
-    //                            GROUP BY departments.department_name, departments.department_id, departments.over_head_costs
-    //                            ORDER BY departments.department_id ASC`
     , function(error,results){
                                    if(error) throw error;
                                 console.log(storeColor(`\n=========================================================================================\n`));
@@ -128,19 +116,7 @@ function start(){
     }]).then(function(answers) {
         connection.query(`INSERT INTO departments 
     (department_name, over_head_costs) VALUES ("${answers.new_dept}", ${answers.new_overhead})`, function(error, results) {})
-    // connection.query(
-    //     "INSERT INTO departments SET ?",
-    // {
-      
-    //     'Department Name': answers.new_dept,
-    //     'Overhead Costs': answers.new_overhead
-      
-    // }, function(error, results) {})
-    //     console.log(`\n- - - - - - - - -\n`);
-    //     console.log(`Department Added Successfully!`);
-    //     console.log(`\n- - - - - - - - -\n`);
-    //     start();
-    // })
+   
     console.log(storeColor(`\n- - - - - - - - -\n`));
         console.log(storeColor(`Department Added Successfully!`));
      console.log(storeColor(`\n- - - - - - - - -\n`));
@@ -152,10 +128,4 @@ function start(){
 
 
 
-  // "INSERT INTO products SET ?",
-    // {
-    //   product_name: answer.productName,
-    //   department_name: answer.departmentName,
-    //   price: answer.priceValue,
-    //   stock_quantity: answer.stockQuantity
-    // },
+ 

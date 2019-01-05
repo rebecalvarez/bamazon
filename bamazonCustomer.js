@@ -86,11 +86,14 @@ function purchase() {
         .then(function(answer) {
           // get the information of the chosen item
           var chosenItem;
+          var productSalesItem;
           for (var i = 0; i < results.length; i++) {
             if (results[i].product_name === answer.choice) {
               chosenItem = results[i];
+              
             }
           }
+         
           var inputQuantity = parseInt(answer.quantity);
             var enoughProduct = chosenItem.stock_quantity - inputQuantity;
             
@@ -99,6 +102,10 @@ function purchase() {
             // there is enough, so update db
             var totalPurchase = chosenItem.price * inputQuantity;
                 totalPurchase = totalPurchase.toFixed(2);
+                // the sum of all the sales plus the new sale
+                productSalesItem = parseInt(chosenItem.product_sales) + parseInt(totalPurchase);
+                console.log(redColor("Chosen item Product Sales: " + chosenItem.product_sales + totalPurchase ));
+                console.log(redColor("This is the product sales Item  " + productSalesItem));
             connection.query(
               "UPDATE products SET ? WHERE ?",
               [
@@ -123,7 +130,7 @@ function purchase() {
                 "UPDATE products SET ? WHERE ?",
                 [
                   {
-                    product_sales: totalPurchase
+                    product_sales: productSalesItem
                   },
                   {
                       item_id: chosenItem.item_id
